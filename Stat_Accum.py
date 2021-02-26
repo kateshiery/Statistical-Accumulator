@@ -14,6 +14,8 @@ import tkinter
 from tkinter import messagebox
 from tkinter import *
 import pandas as pd
+#Use prettytable in formatting output instead
+from prettytable import PrettyTable
 
 #Variables: 
 #p=number of parts,n=number of parts that passed through queue
@@ -31,7 +33,7 @@ def stat_accum():
     #functions
     try:
         prd=int(inp.get())
-        #Format output
+        #Format output or prettytable
         table.grid(row=3, column=0, pady=5)
         Label(table, text="{:^15} {:^15} {:^18} {:^12} {:^12} {:^28} {:^18} {:^8} {:^8} {:^8} {:^8} {:^8} {:^8} {:^8} {:^7}"
               .format("0","0","Init","0","0","(1.20,1.30,6.30)","0","0","0","0","0","0","0","0","0"), 
