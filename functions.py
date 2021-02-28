@@ -38,7 +38,7 @@ def create_matrix(entities, sim_period):
             current_entity = in_queue[-1]
             queued_entity = True
             temp[2] = "arr"
-        if in_service is None and len(in_queue) > 0:
+        if in_service is None and in_queue:
             in_service = in_queue.pop(0)
             in_service.service_start = current_time
             current_entity = in_service
@@ -49,7 +49,7 @@ def create_matrix(entities, sim_period):
             current_entity = in_service
             in_service = None
             temp[2] = "dep"
-            if len(in_queue) > 0:
+            if in_ queue:
                 in_service = in_queue.pop(0)
                 in_service.service_start = current_time
         elif not queued_entity:
