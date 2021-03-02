@@ -43,7 +43,6 @@ def show_table():
                 Label(table,text=space.format(cols[j]),bg=bgc).grid(row=i, column=j, padx=3)
                 j=j+1
             i = i+1 
-        print(len(matrix))
         Label(summary,text="Summary of Statistical Accumulators" +
                 "\n1. The number of parts produced so far: " + str(matrix[len(matrix)-1][7]) +
                 "\n2. The total of the waiting times in queue so far: " + str(matrix[len(matrix)-1][9]) +
