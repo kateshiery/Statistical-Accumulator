@@ -15,6 +15,7 @@ from functions import *
 #GUI
 prd=0
 def show_table():
+    table.grid_remove
     try:
         prd=int(inp.get())
         min_time = 1
@@ -65,9 +66,8 @@ fg='dim gray'
 #Input and output frame configuration to make frames resizeable
 root.columnconfigure(0, weight=1)
 root.rowconfigure(1, weight=1)
-input_frame = Frame(root)
+input_frame = Frame(root, width=180)
 input_frame.rowconfigure(0, weight=1)
-input_frame.columnconfigure(0, weight=1)
 input_frame.grid(row=0, column=0, padx=10, pady=5)
 output_frame = Frame(root, bg=bgc)
 output_frame.grid(row=0, column=1, padx=10, pady=5)
@@ -82,7 +82,7 @@ intVar = IntVar()
 inp = Entry(input_frame)
 inp.grid(row=1, column=0)
 Button(input_frame, text='Okay', command=show_table).grid(row=2, column=0, pady=4)
-Button(input_frame, text='Clear', command=table.grid_remove).grid(row=3, column=0, pady=4)
+#Button(input_frame, text='Clear', command=table.grid_remove).grid(row=3, column=0, pady=4)
 
 #Labels for the output
 Label(output_frame, text="Table Simulation of the System", bg=bgc).grid(row=0,column=0, sticky='n')
