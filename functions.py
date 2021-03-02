@@ -10,11 +10,16 @@ class Entity:
         self.service_time = service_time
         self.service_start = None
 
+# Functions for Statistical Accumulators
+
+
+# End of Statistical Accumulator Functions
+
 
 # Creates matrix to be shown in the UI?
 # In this format:
 # Just Finished Event			Variables		Atrributes (Arrival Times)		Statistical Accumulator									
-# Part No.	Time(t)	Event Type	Q(t)	B(t)	In Queue	In Service	P	N	 ΣWQ	WQ*	 ΣTS	TS*	sq	sq*	sb
+# Part No.	Time(t)	Event Type	Q(t)	B(t)	In Queue	In Service	P	N	 ΣWQ	WQ*	 ΣTS	TS*	sQ	Q*	sB
 #   -       -	        init	0	    0	    []	            []	    0	0	  0	    0	  0	    0	0	0	0
 #   1	    0	        arr	    0	    1	    []	            [0]	    0	1	  0	    0	  0	    0	0	0	0
 #   2	    1.73	    arr	    1	    1	    [1.73]	        [0]	    0	1	  0	    0	  0	    0	0	1	1.73
@@ -26,6 +31,12 @@ def create_matrix(entities, sim_period):
     matrix =[["-","-","init","0","0","[]","[]","0","0","0","0","0","0","0","0","0"]]
     in_queue = []
     in_service = None
+    P = 0
+    N = 0
+    sum_Q = 0
+    max_Q = 0
+    sum_TS = 0
+    max_TS = 0
 
     current_time = 0.00
     while current_time < sim_period:
@@ -34,34 +45,62 @@ def create_matrix(entities, sim_period):
         queued_entity = False
         current_entity = None
         if entities[0].arrival_time == current_time:
+            # This block runs when an entity arrived
             in_queue.append(entities.pop(0)) 
             current_entity = in_queue[-1]
             queued_entity = True
+            N += 1
             temp[2] = "arr"
         if in_service is None and in_queue:
+            # This block runs when there's no in service and there's an entity in the queue
             in_service = in_queue.pop(0)
             in_service.service_start = current_time
             current_entity = in_service
+
             if not queued_entity:
+                # This block runs when there's no arrival and simply the next in queue is pushed in service
                 current_time = round(current_time+0.01,2)
                 continue
         elif in_service is not None and in_service.service_start + in_service.service_time == current_time:
+            # This block runs when the entity in service is already finished
             current_entity = in_service
+            system_time = round(current_time - current_entity.service_start,2)
+            sum_TS += system_time
+            if system_time > max_TS: max_TS = system_time
+            
             in_service = None
+            P += 1
             temp[2] = "dep"
-            if in_ queue:
+
+            if in_queue:
+                # This block runs when the entity in service is already finished and there's an entity next in queue, push it to service
                 in_service = in_queue.pop(0)
                 in_service.service_start = current_time
+
+                # Compute waiting time and assign it to statistical accumulators accordingly
+                waiting_time = round(in_service.service_start - in_service.arrival_time,2)
+                sum_Q += waiting_time
+                if waiting_time > max_Q: max_Q = waiting_time
         elif not queued_entity:
+            # This block runs when no entity arrived nor no entity finished in service at the time
             current_time = round(current_time+0.01,2)
             continue
         
+        
+
+        # Assignment of values to the temp list
         temp[0] = current_entity.number    
         temp[1] = current_time
         temp[3] = len(in_queue)
         temp[4] = "0" if in_service is None else "1"
         temp[5] = [entity.arrival_time for entity in in_queue]
         temp[6] = "[]" if in_service is None else "["+str(in_service.arrival_time)+"]"
+        temp[7] = P
+        temp[8] = N
+        temp[9] = sum_Q
+        temp[10] = max_Q
+        temp[11]= sum_TS
+        temp[12] = max_TS
         #append temp to matrix
         matrix.append(temp)
         current_time = round(current_time+0.01,2)
