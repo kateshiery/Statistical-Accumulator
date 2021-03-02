@@ -13,9 +13,10 @@
 import tkinter
 from tkinter import messagebox
 from tkinter import *
-import pandas as pd
+from functions import generate_entities, create_matrix
+#import pandas as pd
 #Use prettytable in formatting output instead
-from prettytable import PrettyTable
+#from prettytable import PrettyTable
 
 #Variables: 
 #p=number of parts,n=number of parts that passed through queue
@@ -32,12 +33,24 @@ from prettytable import PrettyTable
 def stat_accum():
     #functions
     try:
-        prd=int(inp.get())
+
+        column = []
+        min_time = 1
+        max_time = 10
+        prd = int(inp.get())
+        entities = generate_entities(min_time,max_time,prd)
+        matrix = create_matrix(entities,prd)
         #Format output or prettytable
-        table.grid(row=3, column=0, pady=5)
-        Label(table, text="{:^15} {:^15} {:^18} {:^12} {:^12} {:^28} {:^18} {:^8} {:^8} {:^8} {:^8} {:^8} {:^8} {:^8} {:^7}"
-              .format("0","0","Init","0","0","(1.20,1.30,6.30)","0","0","0","0","0","0","0","0","0"), 
-              bg=bgc).grid(row=0, column=0, sticky="nw", padx=3)
+        table.grid(row=20, column=0, pady=5)
+
+        for row in matrix:
+            for col in row:
+                column.append(col)
+            Label(table,
+                  text="{:^17} {:^16} {:^19} {:^13} {:^6} {:^39} {:^27} {:^9} {:^9} {:^9} {:^9} {:^9} {:^9} {:^9} {:^9}"
+                  .format(column[0], column[1], column[2], column[3], column[4], column[5], column[6], column[7], column[8], column[9], column[10], column[11], column[12], column[13],
+                          column[14]),
+                  bg=bgc).grid(row=0, column=0, sticky="nw", padx=3)
     except:
         messagebox.showerror("Invalid Input", "Please input a valid simulation period (int).")
 
@@ -80,15 +93,6 @@ Label(output_frame, text="{:^13} {:^10} {:^13} {:^9} {:^9} {:^30} {:^20} {:^6} {
           bg=bgc,foreground=fg).grid(row=2, column=0, sticky="nw", padx=3)
 
 root.mainloop()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
 
 
 
