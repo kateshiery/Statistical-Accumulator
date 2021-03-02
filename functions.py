@@ -1,3 +1,8 @@
+#Team Members:
+#Malibiran, Jerry U.
+#Melegrito, Aaron Joshua B.
+#Ramos, Dexyn B.
+#Talipnao, Kate Shiery P.
 from random import uniform
 from copy import copy
 
@@ -28,7 +33,8 @@ class Entity:
 # IN PROGRESS
 # Statistical Accumulators are still missing
 def create_matrix(entities, sim_period):
-    matrix =[["-","-","init","0","0","[]","[]","0","0","0","0","0","0","0","0","0"]]
+    matrix = [["Entity No.","Time(t)","Event Type","Q(t)","B(t)","In Queue","In Service","P","N","∑WQ","WQ*","∑TS","TS*","∫Q","Q*","∫Q"]]
+    init =["-","-","init","0","0","-","-","0","0","0","0","0","0","0","0","0"]
     in_queue = []
     in_service = None
     P = 0
@@ -37,10 +43,11 @@ def create_matrix(entities, sim_period):
     max_Q = 0
     sum_TS = 0
     max_TS = 0
+    matrix.append(init)
 
     current_time = 0.00
     while current_time < sim_period:
-        temp = ["-","-","init","0","0","[]","[]","0","0","0","0","0","0","0","0","0"]
+        temp = ["-","-","init","0","0","-","-","0","0","0","0","0","0","0","0","0"]
         #modify temp here to create a new row
         queued_entity = False
         current_entity = None
@@ -65,8 +72,8 @@ def create_matrix(entities, sim_period):
             # This block runs when the entity in service is already finished
             current_entity = in_service
             system_time = round(current_time - current_entity.service_start,2)
-            sum_TS += system_time
-            if system_time > max_TS: max_TS = system_time
+            sum_TS += round(system_time,2)
+            if system_time > max_TS: max_TS = round(system_time,2)
             
             in_service = None
             P += 1
@@ -79,8 +86,8 @@ def create_matrix(entities, sim_period):
 
                 # Compute waiting time and assign it to statistical accumulators accordingly
                 waiting_time = round(in_service.service_start - in_service.arrival_time,2)
-                sum_Q += waiting_time
-                if waiting_time > max_Q: max_Q = waiting_time
+                sum_Q += round(waiting_time,2)
+                if waiting_time > max_Q: max_Q = round(waiting_time,2)
         elif not queued_entity:
             # This block runs when no entity arrived nor no entity finished in service at the time
             current_time = round(current_time+0.01,2)
@@ -94,13 +101,13 @@ def create_matrix(entities, sim_period):
         temp[3] = len(in_queue)
         temp[4] = "0" if in_service is None else "1"
         temp[5] = [entity.arrival_time for entity in in_queue]
-        temp[6] = "[]" if in_service is None else "["+str(in_service.arrival_time)+"]"
+        temp[6] = "-" if in_service is None else str(in_service.arrival_time)
         temp[7] = P
         temp[8] = N
-        temp[9] = sum_Q
-        temp[10] = max_Q
-        temp[11]= sum_TS
-        temp[12] = max_TS
+        temp[9] = round(sum_Q,2)
+        temp[10] = round(max_Q,2)
+        temp[11]= round(sum_TS,2)
+        temp[12] = round(max_TS,2)
         #append temp to matrix
         matrix.append(temp)
         current_time = round(current_time+0.01,2)
@@ -130,19 +137,3 @@ def generate_entities(min_time, max_time, sim_period):
         i += 1
         
     return entities
-
-
-# TEST RUN FOR CHECKING 
-min_time = 1
-max_time = 10
-sim_period = 20
-
-entities = generate_entities(min_time,max_time,sim_period)
-for entity in entities:
-    print(entity.number,entity.arrival_time,entity.interarrival_time,entity.service_time,"\n")
-
-matrix = create_matrix(entities, sim_period)
-for row in matrix:
-    for col in row:
-        print(col, end = " ")
-    print("\n")
