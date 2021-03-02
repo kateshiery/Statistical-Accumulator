@@ -120,11 +120,19 @@ def create_matrix(entities, sim_period):
         #append temp to matrix
         matrix.append(temp)
         current_time = round(current_time+0.01,2)
-
+    
     end = copy(matrix[-1])
+    current_queue_area = round((current_time - end[1]) * end[3],2)
+    sum_Q += current_queue_area
+    if len(in_queue) > max_Q: max_Q = len(in_queue)
+    sum_B += (current_time - end[1]) * end[4]
+
     end[0] = "-"
     end[1] = sim_period
     end[2] = "end"
+    end[13] = sum_Q
+    end[14] = max_Q
+    end[15] = sum_B 
     matrix.append(end)
     return matrix
 
