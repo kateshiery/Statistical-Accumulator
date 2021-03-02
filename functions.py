@@ -21,7 +21,7 @@ class Entity:
 # End of Statistical Accumulator Functions
 
 
-# Creates matrix to be shown in the UI?
+# Creates matrix to be shown in the UI
 # In this format:
 # Just Finished Event			Variables		Atrributes (Arrival Times)		Statistical Accumulator									
 # Part No.	Time(t)	Event Type	Q(t)	B(t)	In Queue	In Service	P	N	 ΣWQ	WQ*	 ΣTS	TS*	sQ	Q*	sB
@@ -33,7 +33,7 @@ class Entity:
 # IN PROGRESS
 # Statistical Accumulators are still missing
 def create_matrix(entities, sim_period):
-    matrix = [["Entity No.","Time(t)","Event Type","Q(t)","B(t)","In Queue","In Service","P","N","∑WQ","WQ*","∑TS","TS*","∫Q","Q*","∫Q"]]
+    matrix = [["Entity No.","Time(t)","Event Type","Q(t)","B(t)","In Queue","In Service","P","N","∑WQ","WQ*","∑TS","TS*","∫Q","Q*","∫B"]]
     init =["-","-","init","0","0","-","-","0","0","0","0","0","0","0","0","0"]
     in_queue = []
     in_service = None
@@ -137,3 +137,5 @@ def generate_entities(min_time, max_time, sim_period):
         i += 1
         
     return entities
+
+
