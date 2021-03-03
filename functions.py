@@ -153,6 +153,3 @@ def generate_entities(min_time, max_time, sim_period):
         
     return entities
 
-def getTS():
-    return TS
-

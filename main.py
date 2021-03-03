@@ -62,7 +62,7 @@ def show_table():
                 "\n6. The longest time in system we’ve seen so far: " + str(matrix[l-1][12]) +
                 "\n7. The area so far under the queue-length curve Q(t): " + str(matrix[l-1][13]) +
                 "\n8. The highest level that Q(t) has so far attained: "  + str(matrix[l-1][3]) +
-                "\n9. The area so far under the server-busy function B (t): " + str(matrix[l-1][15])
+                "\n9. The area so far under the server-busy function B (t): " + str(round(matrix[l-1][15],3))
                 ,bg=bgc, justify=LEFT).grid(row=0, column=0, sticky='W', padx=3)
         Label(summary,text="Output Performance Measures" +
                 "\n1. Total production: " + str(sum(map(lambda i: i in('dep'), column(matrix,2)))) +
