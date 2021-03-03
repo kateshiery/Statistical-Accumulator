@@ -21,33 +21,34 @@ class Entity:
 # End of Statistical Accumulator Functions
 
 
-# Creates matrix to be shown in the UI?
+# Creates matrix to be shown in the UI
 # In this format:
 # Just Finished Event			Variables		Atrributes (Arrival Times)		Statistical Accumulator									
-# Part No.	Time(t)	Event Type	Q(t)	B(t)	In Queue	In Service	P	N	 ΣWQ	WQ*	 ΣTS	TS*	sQ	Q*	sB
-#   -       -	        init	0	    0	    []	            []	    0	0	  0	    0	  0	    0	0	0	0
-#   1	    0	        arr	    0	    1	    []	            [0]	    0	1	  0	    0	  0	    0	0	0	0
-#   2	    1.73	    arr	    1	    1	    [1.73]	        [0]	    0	1	  0	    0	  0	    0	0	1	1.73
+# Part No.	Time(t)	Event Type	Q(t)	B(t)	In Queue	In Service	P	N	 ΣWQ	WQ*	 ΣTS	TS*	sQ	Q*	sB    TS
+#   -       -	        init	0	    0	    []	            []	    0	0	  0	    0	  0	    0	0	0	0     0 
+#   1	    0	        arr	    0	    1	    []	            [0]	    0	1	  0	    0	  0	    0	0	0	0     0
+#   2	    1.73	    arr	    1	    1	    [1.73]	        [0]	    0	1	  0	    0	  0	    0	0	1	1.73  0
 # ...
 #   -	    20	        end	    1	    1	    [19.39]	      [18.69]	5	6	15.17   8.16 32.2 12.62	15.78 3	18.34
-# IN PROGRESS
-# Statistical Accumulators are still missing
 def create_matrix(entities, sim_period):
-    matrix = [["Entity No.","Time(t)","Event Type","Q(t)","B(t)","In Queue","In Service","P","N","∑WQ","WQ*","∑TS","TS*","∫Q","Q*","∫Q"]]
-    init =["-","-","init","0","0","-","-","0","0","0","0","0","0","0","0","0"]
+    matrix = [["Entity No.","Time(t)","Event Type","Q(t)","B(t)","In Queue","In Service","P","N","∑WQ","WQ*","∑TS","TS*","∫Q","Q*","∫B"]]
+    init =[0,0,"init",0,0,[],0,0,0,0,0,0,0,0,0,0]
+    matrix.append(init)
     in_queue = []
     in_service = None
     P = 0
     N = 0
-    sum_Q = 0
-    max_Q = 0
+    sum_WQ = 0
+    max_WQ = 0
     sum_TS = 0
     max_TS = 0
-    matrix.append(init)
+    sum_Q = 0
+    max_Q = 0
+    sum_B = 0
 
     current_time = 0.00
     while current_time < sim_period:
-        temp = ["-","-","init","0","0","-","-","0","0","0","0","0","0","0","0","0"]
+        temp = [0,0,"init",0,0,[],0,0,0,0,0,0,0,0,0,0]
         #modify temp here to create a new row
         queued_entity = False
         current_entity = None
@@ -72,9 +73,9 @@ def create_matrix(entities, sim_period):
             # This block runs when the entity in service is already finished
             current_entity = in_service
             system_time = round(current_time - current_entity.service_start,2)
-            sum_TS += round(system_time,2)
-            if system_time > max_TS: max_TS = round(system_time,2)
-            
+            sum_TS += system_time
+            if system_time > max_TS: max_TS = system_time
+
             in_service = None
             P += 1
             temp[2] = "dep"
@@ -86,28 +87,35 @@ def create_matrix(entities, sim_period):
 
                 # Compute waiting time and assign it to statistical accumulators accordingly
                 waiting_time = round(in_service.service_start - in_service.arrival_time,2)
-                sum_Q += round(waiting_time,2)
-                if waiting_time > max_Q: max_Q = round(waiting_time,2)
+                sum_WQ += waiting_time
+                if waiting_time > max_WQ: max_WQ = waiting_time
         elif not queued_entity:
             # This block runs when no entity arrived nor no entity finished in service at the time
             current_time = round(current_time+0.01,2)
             continue
-        
-        
+
+
+        current_queue_area = round(float((current_time - matrix[-1][1]) * matrix[-1][3]),2)
+        sum_Q += current_queue_area
+        if len(in_queue) > max_Q: max_Q = len(in_queue)
+        sum_B += (current_time - matrix[-1][1]) * matrix[-1][4]
 
         # Assignment of values to the temp list
         temp[0] = current_entity.number    
         temp[1] = current_time
         temp[3] = len(in_queue)
-        temp[4] = "0" if in_service is None else "1"
+        temp[4] = 0 if in_service is None else 1
         temp[5] = [entity.arrival_time for entity in in_queue]
         temp[6] = "-" if in_service is None else str(in_service.arrival_time)
         temp[7] = P
         temp[8] = N
-        temp[9] = round(sum_Q,2)
-        temp[10] = round(max_Q,2)
+        temp[9] = round(sum_WQ,2)
+        temp[10] = round(max_WQ,2)
         temp[11]= round(sum_TS,2)
         temp[12] = round(max_TS,2)
+        temp[13] = round(sum_Q,2)
+        temp[14] = round(max_Q,2)
+        temp[15] = round(sum_B,2) 
         #append temp to matrix
         matrix.append(temp)
         current_time = round(current_time+0.01,2)
@@ -138,4 +146,6 @@ def generate_entities(min_time, max_time, sim_period):
         
     return entities
 
+def getTS():
+    return TS
 
