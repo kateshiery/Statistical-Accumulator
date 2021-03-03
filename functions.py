@@ -123,9 +123,9 @@ def create_matrix(entities, sim_period):
     end[0] = "-"
     end[1] = sim_period
     end[2] = "end"
-    end[13] = sum_Q
-    end[14] = max_Q
-    end[15] = sum_B 
+    end[13] = round(sum_Q,2)
+    end[14] = round(max_Q,2)
+    end[15] = round(sum_B,2) 
     matrix.append(end)
     return matrix
 
