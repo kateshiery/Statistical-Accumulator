@@ -108,7 +108,6 @@ def create_matrix(entities, sim_period):
         temp[6] = "-" if in_service is None else str(in_service.arrival_time)
         temp[7] = P
         temp[8] = N
-<<<<<<< HEAD
         temp[9] = round(sum_WQ,2)
         temp[10] = round(max_WQ,2)
         temp[11]= round(sum_TS,2)
@@ -116,15 +115,6 @@ def create_matrix(entities, sim_period):
         temp[13] = round(sum_Q,2)
         temp[14] = round(max_Q,2)
         temp[15] = round(sum_B,2) 
-=======
-        temp[9] = sum_WQ
-        temp[10] = max_WQ
-        temp[11]= sum_TS
-        temp[12] = max_TS
-        temp[13] = sum_Q
-        temp[14] = max_Q
-        temp[15] = sum_B 
->>>>>>> b67efa3c5cdc99b315d3ad0a15240ced238b8e50
         #append temp to matrix
         matrix.append(temp)
         current_time = round(current_time+0.01,2)
