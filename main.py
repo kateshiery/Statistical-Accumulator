@@ -21,7 +21,7 @@ from functions import *
 #Display complete output
 prd=0
 def show_table():
-    summary.grid_forget
+    summary.grid_destroy
     try:
         prd=int(inp.get())
         min_time = 1
@@ -122,7 +122,7 @@ intVar = IntVar()
 inp = Entry(input_frame)
 inp.grid(row=1, column=0)
 Button(input_frame, text='Okay', command=show_table).grid(row=2, column=0, pady=4)
-Button(input_frame, text='Clear Table', command=table.grid_forget).grid(row=3, column=0, pady=4)
+Button(input_frame, text='Clear Table', command=table.grid_destroy).grid(row=3, column=0, pady=4)
 
 #Labels for the output
 Label(output_frame, text="Table Simulation of the System", bg=bgc).grid(row=0,column=0, sticky='n')
