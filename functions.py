@@ -93,19 +93,10 @@ def create_matrix(entities, sim_period):
             # This block runs when no entity arrived nor no entity finished in service at the time
             current_time = round(current_time+0.01,2)
             continue
-<<<<<<< HEAD
-
 
         current_queue_area = round(float((current_time - matrix[-1][1]) * matrix[-1][3]),2)
         sum_Q += current_queue_area
         if len(in_queue) > max_Q: max_Q = len(in_queue)
-=======
-        
-        current_queue_area = round((current_time - matrix[-1][1]) * matrix[-1][3],2)
-        sum_Q += current_queue_area
-        if len(in_queue) > max_Q: max_Q = len(in_queue)
-
->>>>>>> b67efa3c5cdc99b315d3ad0a15240ced238b8e50
         sum_B += (current_time - matrix[-1][1]) * matrix[-1][4]
 
         # Assignment of values to the temp list
