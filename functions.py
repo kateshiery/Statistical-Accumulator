@@ -15,11 +15,6 @@ class Entity:
         self.service_time = service_time
         self.service_start = None
 
-# Functions for Statistical Accumulators
-
-
-# End of Statistical Accumulator Functions
-
 
 # Creates matrix to be shown in the UI
 # In this format:

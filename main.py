@@ -21,8 +21,8 @@ from functions import *
 #Display complete output
 prd=0
 def show_table():
-        table.grid_remove
-    #try:
+    table.grid_remove
+    try:
         prd=int(inp.get())
         min_time = 1
         max_time = 10
@@ -74,9 +74,9 @@ def show_table():
                 "\n7. Maximum number of parts in queue: " + str(len(q)) +
                 "\n8. Drill-press utilization: " + str(round((matrix[l-1][14])/l, 3))
                 ,bg=bgc, justify=LEFT).grid(row=0, column=1, sticky='W', padx=3)
-    #except Exception as e:
-        #messagebox.showerror("Invalid Input", "Please input a valid simulation period (int).")
-        #print(e)
+    except Exception as e:
+        messagebox.showerror("Invalid Input", "Please input a valid simulation period (int).")
+        print(e)
 
 
 #Convert lists to string
