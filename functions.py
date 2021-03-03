@@ -93,11 +93,19 @@ def create_matrix(entities, sim_period):
             # This block runs when no entity arrived nor no entity finished in service at the time
             current_time = round(current_time+0.01,2)
             continue
+<<<<<<< HEAD
 
 
         current_queue_area = round(float((current_time - matrix[-1][1]) * matrix[-1][3]),2)
         sum_Q += current_queue_area
         if len(in_queue) > max_Q: max_Q = len(in_queue)
+=======
+        
+        current_queue_area = round((current_time - matrix[-1][1]) * matrix[-1][3],2)
+        sum_Q += current_queue_area
+        if len(in_queue) > max_Q: max_Q = len(in_queue)
+
+>>>>>>> b67efa3c5cdc99b315d3ad0a15240ced238b8e50
         sum_B += (current_time - matrix[-1][1]) * matrix[-1][4]
 
         # Assignment of values to the temp list
@@ -109,6 +117,7 @@ def create_matrix(entities, sim_period):
         temp[6] = "-" if in_service is None else str(in_service.arrival_time)
         temp[7] = P
         temp[8] = N
+<<<<<<< HEAD
         temp[9] = round(sum_WQ,2)
         temp[10] = round(max_WQ,2)
         temp[11]= round(sum_TS,2)
@@ -116,14 +125,31 @@ def create_matrix(entities, sim_period):
         temp[13] = round(sum_Q,2)
         temp[14] = round(max_Q,2)
         temp[15] = round(sum_B,2) 
+=======
+        temp[9] = sum_WQ
+        temp[10] = max_WQ
+        temp[11]= sum_TS
+        temp[12] = max_TS
+        temp[13] = sum_Q
+        temp[14] = max_Q
+        temp[15] = sum_B 
+>>>>>>> b67efa3c5cdc99b315d3ad0a15240ced238b8e50
         #append temp to matrix
         matrix.append(temp)
         current_time = round(current_time+0.01,2)
-
+    
     end = copy(matrix[-1])
+    current_queue_area = round((current_time - end[1]) * end[3],2)
+    sum_Q += current_queue_area
+    if len(in_queue) > max_Q: max_Q = len(in_queue)
+    sum_B += (current_time - end[1]) * end[4]
+
     end[0] = "-"
     end[1] = sim_period
     end[2] = "end"
+    end[13] = sum_Q
+    end[14] = max_Q
+    end[15] = sum_B 
     matrix.append(end)
     return matrix
 
