@@ -22,6 +22,7 @@ from functions import *
 prd=0
 def show_table():
     table.grid_remove
+    summary.grid_remove
     try:
         prd=int(inp.get())
         min_time = 1
